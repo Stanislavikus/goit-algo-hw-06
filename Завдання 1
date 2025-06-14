@@ -1,0 +1,26 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Створюємо граф: транспортна мережа (з голови, бо немає часу та фантазії. Припустимо у віддаленому селі)
+G = nx.Graph()
+
+# Додаємо станції як вузли
+stations = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+G.add_nodes_from(stations)
+
+# Додаємо з'єднання між станціями (ребра)
+edges = [('A', 'B'), ('B', 'C'), ('C', 'D'), ('A', 'E'), ('E', 'F'), ('F', 'D'), ('C', 'G')]
+G.add_edges_from(edges)
+
+# Візуалізація графа
+plt.figure(figsize=(8, 6))
+nx.draw(G, with_labels=True, node_color='lightblue', node_size=1500, font_size=12)
+plt.title("Транспортна мережа метро")
+plt.show()
+
+# Аналіз основних характеристик
+print(f"Кількість вершин: {G.number_of_nodes()}")
+print(f"Кількість ребер: {G.number_of_edges()}")
+print("Ступінь вершин:")
+for node, degree in G.degree():
+    print(f"{node}: {degree}")
