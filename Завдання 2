@@ -1,0 +1,29 @@
+from collections import deque
+
+# DFS (рекурсивна реалізація)
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = []
+    visited.append(start)
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited)
+    return visited
+
+# BFS (через чергу)
+def bfs(graph, start):
+    visited = []
+    queue = deque([start])
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            visited.append(node)
+            queue.extend([n for n in graph[node] if n not in visited])
+    return visited
+
+# Порівняння DFS і BFS
+dfs_result = dfs(G, 'A')
+bfs_result = bfs(G, 'A')
+
+print("DFS шлях:", dfs_result) # Аналіз: DFS іде вглиб, може пройти однією гілкою до кінця.
+print("BFS шлях:", bfs_result) # BFS оглядає рівні, знаходить найкоротші шляхи до вершин у незваженому графі.
