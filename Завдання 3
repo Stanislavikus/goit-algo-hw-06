@@ -1,0 +1,20 @@
+# Створимо новий граф з вагами (вага = час у хвилинах між станціями)
+G_weighted = nx.Graph()
+G_weighted.add_weighted_edges_from([
+    ('A', 'B', 5),
+    ('B', 'C', 4),
+    ('C', 'D', 6),
+    ('A', 'E', 3),
+    ('E', 'F', 7),
+    ('F', 'D', 2),
+    ('C', 'G', 8)
+])
+
+# Алгоритм Дейкстри з networkx
+start_node = 'A'
+shortest_paths = nx.single_source_dijkstra_path(G_weighted, start_node)
+shortest_distances = nx.single_source_dijkstra_path_length(G_weighted, start_node)
+
+print(f"Найкоротші шляхи від '{start_node}':")
+for target, path in shortest_paths.items():
+    print(f"{start_node} -> {target}: {path}, довжина = {shortest_distances[target]}")
