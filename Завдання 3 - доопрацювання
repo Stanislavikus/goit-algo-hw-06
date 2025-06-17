@@ -1,0 +1,59 @@
+import networkx as nx
+import heapq
+
+# Створимо граф з вагами (час у хвилинах між станціями)
+G = nx.Graph()
+G.add_weighted_edges_from([
+    ('A', 'B', 5),
+    ('B', 'C', 4),
+    ('C', 'D', 6),
+    ('A', 'E', 3),
+    ('E', 'F', 7),
+    ('F', 'D', 2),
+    ('C', 'G', 8)
+])
+
+def dijkstra(graph, start):
+    # Ініціалізація
+    distances = {node: float('inf') for node in graph.nodes}
+    previous = {node: None for node in graph.nodes}
+    distances[start] = 0
+    visited = set()
+    
+    # Пріоритетна черга (відстань, вузол)
+    heap = [(0, start)]
+    
+    while heap:
+        current_distance, current_node = heapq.heappop(heap)
+        
+        if current_node in visited:
+            continue
+        visited.add(current_node)
+        
+        for neighbor in graph.neighbors(current_node):
+            weight = graph[current_node][neighbor]['weight']
+            distance = current_distance + weight
+            
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous[neighbor] = current_node
+                heapq.heappush(heap, (distance, neighbor))
+    
+    return distances, previous
+
+def reconstruct_path(previous, target):
+    path = []
+    while target is not None:
+        path.insert(0, target)
+        target = previous[target]
+    return path
+
+# Виконання
+start_node = 'A'
+distances, previous = dijkstra(G, start_node)
+
+# Вивід результатів
+print(f"Найкоротші шляхи від '{start_node}':")
+for node in G.nodes:
+    path = reconstruct_path(previous, node)
+    print(f"{start_node} -> {node}: {path}, довжина = {distances[node]}")
